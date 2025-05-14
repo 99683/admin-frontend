@@ -12,19 +12,25 @@ import PersonIcon from "@mui/icons-material/Person";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import SettingsIcon from "@mui/icons-material/Settings";
 import TerminalIcon from "@mui/icons-material/Terminal";
+import { useNavigate } from "react-router-dom";
+
+
 
 const sidebarItems = [
-  { icon: <PersonIcon />, label: "User profile" },
-  { icon: <CalendarTodayIcon />, label: "Calendar" },
-  { icon: <SettingsIcon />, label: "Logs" },
-  { icon: <TerminalIcon />, label: "Terminal" },
-];
+    { icon: <PersonIcon />, label: "Users", path: "/users" },
+    { icon: <CalendarTodayIcon />, label: "Calendar", path: "/calendar" },
+    { icon: <SettingsIcon />, label: "Logs", path: "/logs" },
+    { icon: <TerminalIcon />, label: "Terminal", path: "/terminal" },
+  ];
+  
 
 const SIDEBAR_WIDTH_EXPANDED = 180;
 const SIDEBAR_WIDTH_COLLAPSED = 70;
 
 const Sidebar: React.FC = () => {
   const [open, setOpen] = useState(true);
+  const navigate = useNavigate();
+
 
   return (
     <Box
@@ -72,6 +78,7 @@ const Sidebar: React.FC = () => {
             }}
           >
             <ListItemButton
+              onClick={() => navigate(item.path)}
               sx={{
                 borderRadius: 3,
                 justifyContent: open ? "flex-start" : "center",
