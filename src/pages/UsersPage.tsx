@@ -8,30 +8,23 @@ import {
   TableCell,
   TableBody,
   Paper,
-  Toolbar,
   TextField,
   Button,
 } from "@mui/material";
-import bcrypt from "bcryptjs";
-
 interface User {
-  id: number;
-  username: string;
-  firstName: string;
-  lastName: string;
-  role: string;
-  passwordHash: string;
-  createdAt: string;
+  fullName: string;
+  email: string;
+  role: number;
+  password: string;
 }
 
 const UsersPage: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [form, setForm] = useState({
-    username: "",
-    firstName: "",
-    lastName: "",
-    role: "",
+    fullName: "",
+    email: "",
     password: "",
+    role: 3,
   });
 
   useEffect(() => {
@@ -48,21 +41,22 @@ const UsersPage: React.FC = () => {
   }
 
   async function handleAddUser() {
-    const salt = await bcrypt.genSalt(10);
-    const hash = await bcrypt.hash(form.password, salt);
-
     const newUser: User = {
-      id: Date.now(),
-      username: form.username,
-      firstName: form.firstName,
-      lastName: form.lastName,
+      fullName: form.fullName,
+      email: form.email,
+      password: form.password,
       role: form.role,
-      passwordHash: hash,
-      createdAt: new Date().toLocaleString(),
     };
 
+    console.log("New User:", newUser);
+
     setUsers([...users, newUser]);
-    setForm({ username: "", firstName: "", lastName: "", role: "", password: "" });
+    setForm({
+      fullName: "",
+      email: "",
+      password: "",
+      role: 3,
+    });
   }
 
   return (
@@ -84,29 +78,30 @@ const UsersPage: React.FC = () => {
         </Typography>
         <Box display="flex" gap={2} flexWrap="wrap">
           <TextField
-            label="Username"
-            name="username"
-            value={form.username}
+            label="Full Name"
+            name="fullName"
+            value={form.fullName}
             onChange={handleChange}
           />
           <TextField
-            label="First Name"
-            name="firstName"
-            value={form.firstName}
+            label="Email"
+            name="email"
+            value={form.email}
             onChange={handleChange}
           />
-          <TextField
-            label="Last Name"
-            name="lastName"
-            value={form.lastName}
-            onChange={handleChange}
-          />
-          
           <TextField
             label="Password"
             type="password"
             name="password"
             value={form.password}
+            onChange={handleChange}
+          />
+          
+          <TextField
+            label="Role"
+            type="number"
+            name="role"
+            value={form.role}
             onChange={handleChange}
           />
           <Button variant="contained" onClick={handleAddUser}>
@@ -116,7 +111,7 @@ const UsersPage: React.FC = () => {
       </Box>
 
       {/* Users Table */}
-      <Box sx={{ p: 2, width: "100%" }}>
+      {/* <Box sx={{ p: 2, width: "100%" }}>
         <Typography variant="h6" sx={{ fontWeight: "bold", mb: 2, color: "black" }}>
           Users Table
         </Typography>
@@ -129,7 +124,6 @@ const UsersPage: React.FC = () => {
                 <TableCell>First Name</TableCell>
                 <TableCell>Last Name</TableCell>
                 <TableCell>Created At</TableCell>
-                {/* Don't show hashed password in table */}
               </TableRow>
             </TableHead>
             <TableBody>
@@ -146,7 +140,7 @@ const UsersPage: React.FC = () => {
             </TableBody>
           </Table>
         </Paper>
-      </Box>
+      </Box> */}
     </Box>
   );
 };

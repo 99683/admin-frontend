@@ -6,8 +6,6 @@ import LogsPage from "./pages/LogsPage";
 import DashboardPage from "./pages/DashboardPage"; 
 import AdminProfilePage from "./pages/AdminProfilePage";
 
-import { Dashboard } from "@mui/icons-material";
-
 const App: React.FC = () => (
   <Router>
     <Layout>
