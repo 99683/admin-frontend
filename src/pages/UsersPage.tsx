@@ -16,7 +16,7 @@ import {
 } from "@mui/material";
 import { addUser, listUsers } from "../lib/api";
 
-/* ----------------- types ----------------- */
+
 interface NewUser {
   full_name: string;
   email: string;
@@ -32,20 +32,18 @@ interface User {
 type Order = "asc" | "desc";
 type OrderBy = keyof User;
 
-/* ----------------- component ----------------- */
+
 const UsersPage: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [form, setForm] = useState({ full_name: "", email: "", password: "", role: 3 });
 
-  /* ── sort state ── */
   const [order, setOrder] = useState<Order>("asc");
   const [orderBy, setOrderBy] = useState<OrderBy>("id");
 
-  /* ── fetch users once ── */
   useEffect(() => {
     (async () => {
       try {
-        const res = await listUsers();          // { status, data }
+        const res = await listUsers();       
         if (res.status !== 200) return console.error("Error fetching users:", res.status);
 
         const mapped: User[] = res.data.map((u: any) => ({
@@ -61,7 +59,6 @@ const UsersPage: React.FC = () => {
     })();
   }, []);
 
-  /* ── sorting helpers ── */
   const sortedUsers = useMemo(() => {
     const cmp = (a: User, b: User) => {
       const k = orderBy;
@@ -88,20 +85,17 @@ const UsersPage: React.FC = () => {
   const handleAddUser = async () => {
     const payload: NewUser = { ...form };
     try {
-      const res = await addUser(payload);       // { status, data }
+      const res = await addUser(payload);     
       if (res.status !== 200) return console.error("Error adding user:", res);
 
-      /* hard-refresh so every component gets the new data */
       window.location.reload();
     } catch (err) {
       console.error("Error adding user:", err);
     }
   };
 
-  /* ── UI ── */
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 2, width: "100%", p: 2 }}>
-      {/* Add user form */}
       <Box>
         <Typography variant="h6" sx={{ fontWeight: "bold", mb: 2 }}>
           Add User
@@ -123,12 +117,11 @@ const UsersPage: React.FC = () => {
           Users
         </Typography>
 
-        {/* TableContainer gives us its own scrollable area */}
         <TableContainer
           component={Paper}
           sx={{
             width: "95%",
-            maxHeight: 350,          // 👈 adjust as needed
+            maxHeight: 350,         
             bgcolor: "#ededf3",
             overflowY: "auto",
 
@@ -136,7 +129,7 @@ const UsersPage: React.FC = () => {
             "&::-webkit-scrollbar": { width: 8 },
             "&::-webkit-scrollbar-track": { background: "transparent" },
             "&::-webkit-scrollbar-thumb": {
-              backgroundColor: "#9e9e9e",          // invisible by default
+              backgroundColor: "#9e9e9e",          
               borderRadius: 4,
             },
 
