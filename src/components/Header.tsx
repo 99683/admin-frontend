@@ -13,94 +13,51 @@ import {
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import CloseIcon from "@mui/icons-material/Close";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
-import { styled } from "@mui/material/styles";
-import Switch from "@mui/material/Switch";
 import { useNavigate } from "react-router-dom";
-
-// --- Custom Switch from your code ---
-const MaterialUISwitch = styled(Switch)(({ theme }) => ({
-  width: 62,
-  height: 34,
-  padding: 7,
-  '& .MuiSwitch-switchBase': {
-    margin: 1,
-    padding: 0,
-    transform: 'translateX(6px)',
-    '&.Mui-checked': {
-      color: '#fff',
-      transform: 'translateX(22px)',
-      '& .MuiSwitch-thumb:before': {
-        backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 20 20"><path fill="${encodeURIComponent(
-          '#fff',
-        )}" d="M4.2 2.5l-.7 1.8-1.8.7 1.8.7.7 1.8.6-1.8L6.7 5l-1.9-.7-.6-1.8zm15 8.3a6.7 6.7 0 11-6.6-6.6 5.8 5.8 0 006.6 6.6z"/></svg>')`,
-      },
-      '& + .MuiSwitch-track': {
-        opacity: 1,
-        backgroundColor: '#aab4be',
-      },
-    },
-  },
-  '& .MuiSwitch-thumb': {
-    backgroundColor: '#001e3c',
-    width: 32,
-    height: 32,
-    '&::before': {
-      content: "''",
-      position: 'absolute',
-      width: '100%',
-      height: '100%',
-      left: 0,
-      top: 0,
-      backgroundRepeat: 'no-repeat',
-      backgroundPosition: 'center',
-      backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 20 20"><path fill="${encodeURIComponent(
-        '#fff',
-      )}" d="M9.305 1.667V3.75h1.389V1.667h-1.39zm-4.707 1.95l-.982.982L5.09 6.072l.982-.982-1.473-1.473zm10.802 0L13.927 5.09l.982.982 1.473-1.473-.982-.982zM10 5.139a4.872 4.872 0 00-4.862 4.86A4.872 4.872 0 0010 14.862 4.872 4.872 0 0014.86 10 4.872 4.872 0 0010 5.139zm0 1.389A3.462 3.462 0 0113.471 10a3.462 3.462 0 01-3.473 3.472A3.462 3.462 0 016.527 10 3.462 3.462 0 0110 6.528zM1.665 9.305v1.39h2.083v-1.39H1.666zm14.583 0v1.39h2.084v-1.39h-2.084zM5.09 13.928L3.616 15.4l.982.982 1.473-1.473-.982-.982zm9.82 0l-.982.982 1.473 1.473.982-.982-1.473-1.473zM9.305 16.25v2.083h1.389V16.25h-1.39z"/></svg>')`,
-    },
-  },
-  '& .MuiSwitch-track': {
-    opacity: 1,
-    backgroundColor: '#aab4be',
-    borderRadius: 20 / 2,
-  },
-}));
 
 const Header: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <AppBar
-      position="static"
-      sx={{
-        background: "#c59be6",
-        borderRadius: 3,
-        boxShadow: 3,
-        margin: 2,
-        width: "calc(100% - 48px)",
-        left: 0,
-        top: 0,
-      }}
-      elevation={0}
-    >
+  <AppBar
+    position="static"
+    sx={{
+      background: "#26425A",
+      borderRadius: 3,
+      boxShadow: 3,
+      margin: 2,
+      width: "calc(100% - 48px)",
+      left: 0,
+      top: 0,
+    }}
+    elevation={0}
+  >
       <Toolbar sx={{ justifyContent: "space-between", flexWrap: "wrap", gap: 2, minHeight: "64px !important" }}>
         {/* Left: Only Avatar, clickable, with shadow and color change */}
         <Avatar
           sx={{
-            bgcolor: "#fff",
-            color: "#7b5ea7",
+            bgcolor: "#E1CBD7",
+            color: "#26425A",
             width: 40,
             height: 40,
             cursor: "pointer",
-            boxShadow: "0 0 8px 0 rgba(123, 94, 167, 0.3)", // subtle purple shadow
+            boxShadow: "0 0 8px 0 rgba(134, 168, 207, 0.4)",
             transition: "background 0.2s, box-shadow 0.2s",
+            outline: "none",
             "&:hover": {
-              background: "#e1c6f7",
-              boxShadow: "0 0 12px 2px rgba(123, 94, 167, 0.4)",
+              background: "#86A8CF",
+              color: "#fff",
+              boxShadow: "0 0 12px 2px rgba(134, 168, 207, 0.6)",
             },
             "&:active": {
-              background: "#d6b4f6",
-              boxShadow: "0 0 16px 4px rgba(123, 94, 167, 0.5)",
+              background: "#C38EB4",
+              color: "#fff",
+              boxShadow: "0 0 16px 4px rgba(134, 168, 207, 0.8)",
             },
+             "&:focus": {
+                outline: "none",
+                boxShadow: "0 0 12px 2px rgba(134, 168, 207, 0.4)",
+              },
           }}
           onClick={() => navigate("/admin-profile")}
         >
@@ -119,17 +76,18 @@ const Header: React.FC = () => {
               minWidth: 0,
               borderRadius: 20,
               boxShadow: "none",
-              background: "#fff",
+              background: "#5A5A78",
               px: 2,
+              color: '#E1CBD7',
             }}
           >
             <InputBase
               placeholder="Search"
-              sx={{ ml: 1, flex: 1, minWidth: 0 }}
+              sx={{ ml: 1, flex: 1, minWidth: 0, color: 'inherit' }}
               inputProps={{ "aria-label": "search" }}
             />
-            <IconButton size="small">
-              {/* <CloseIcon /> */}
+            <IconButton size="small" sx={{ color: '#C38EB4' }}>
+               <CloseIcon />
             </IconButton>
           </Paper>
         </Box>
@@ -138,36 +96,37 @@ const Header: React.FC = () => {
         <Box sx={{ display: "flex", alignItems: "center", gap: 2, minWidth: 0 }}>
           <IconButton
             disableRipple
-            sx={{
-              bgcolor: "#fff",
-              color: "#7b5ea7",
+             sx={{
+              bgcolor: "#E1CBD7",
+              color: "#26425A",
               width: 40,
               height: 40,
               borderRadius: "50%",
-              boxShadow: "0 0 8px 0 rgba(123, 94, 167, 0.3)",
+              boxShadow: "0 0 8px 0 rgba(134, 168, 207, 0.4)",
               transition: "background 0.2s, box-shadow 0.2s",
               outline: "none",
               "&:hover": {
-                background: "#e1c6f7",
-                boxShadow: "0 0 12px 2px rgba(123, 94, 167, 0.4)",
+                background: "#86A8CF",
+                color: "#fff",
+                boxShadow: "0 0 12px 2px rgba(134, 168, 207, 0.6)",
               },
               "&:active": {
-                background: "#d6b4f6",
-                boxShadow: "0 0 16px 4px rgba(123, 94, 167, 0.5)",
+                background: "#C38EB4",
+                color: "#fff",
+                boxShadow: "0 0 16px 4px rgba(134, 168, 207, 0.8)",
               },
               "&:focus": {
                 outline: "none",
-                boxShadow: "0 0 12px 2px rgba(123, 94, 167, 0.4)",
+                boxShadow: "0 0 12px 2px rgba(134, 168, 207, 0.4)",
               },
             }}
           >
             <NotificationsNoneIcon />
           </IconButton>
-          <MaterialUISwitch defaultChecked />
         </Box>
-      </Toolbar>
-    </AppBar>
-  );
+    </Toolbar>
+  </AppBar>
+);
 };
 
 export default Header;

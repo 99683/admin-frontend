@@ -9,14 +9,14 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => (
       display: "flex",
       height: "100vh",
       width: "100vw",
-      background: "#fff",
+      background: "#1e1e2f",
       overflow: "hidden",
     }}
   >
     <Sidebar />
     <Box sx={{ flex: 1, display: "flex", flexDirection: "column" }}>
       <Header />
-      <Box sx={{ flex: 1, background: "#fff" }}>
+      <Box sx={{ flex: 1, background: "#1e1e2f", p: 2, overflowY: 'auto' }}>
         {children}
       </Box>
     </Box>

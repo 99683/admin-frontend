@@ -9,32 +9,41 @@ const logs = [
 ];
 
 const LogsPage: React.FC = () => (
-    
-  <Box sx={{ p: 2 }}>
-    <Typography variant="h6" sx={{ fontWeight: "bold", mb: 2,color:'black' }}>
+  <Box // Main container for the page content
+    sx={{
+      p: 3, // Add padding for content
+      background: "#2c2c44", // Dark background for the page content area
+      borderRadius: 2,
+      boxShadow: 6, // Subtle shadow
+      color: '#E1CBD7', // Default light text color for the page
+      minHeight: 'calc(100vh - 100px)', // Adjust min height considering header/margins
+      mx: 2, // Match layout padding/margin
+      mt: 2, // Match layout padding/margin
+      width: 'auto', // Allow box to shrink/grow
+    }}
+  >
+    <Typography variant="h5" sx={{ fontWeight: "bold", mb: 2, color: "#C38EB4" }}> {/* Light pinkish purple title */}
       Logs Table
     </Typography>
-    <Paper sx={{ width: "100%", overflow: "hidden", background: "#ededf3" }}>
+    <Paper sx={{ width: "100%", overflow: "hidden", background: "#3a3a5a", color: '#E1CBD7', borderRadius: 2, boxShadow: 3 }}> {/* Darker table background, light text, rounded corners, subtle shadow */}
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>ID</TableCell>
-            <TableCell>User </TableCell>
-            <TableCell>Date</TableCell>
-            <TableCell>Activity</TableCell>
+            <TableCell sx={{ color: '#86A8CF', fontWeight: 'bold', borderBottomColor: '#5A5A78' }}>ID</TableCell> {/* Light blue header text, darker border */}
+            <TableCell sx={{ color: '#86A8CF', fontWeight: 'bold', borderBottomColor: '#5A5A78' }}>User </TableCell>
+            <TableCell sx={{ color: '#86A8CF', fontWeight: 'bold', borderBottomColor: '#5A5A78' }}>Date</TableCell>
+            <TableCell sx={{ color: '#86A8CF', fontWeight: 'bold', borderBottomColor: '#5A5A78' }}>Activity</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-
           {logs.map((log) => (
-            <TableRow key={log.id}>
-              <TableCell>{log.id}</TableCell>
-              <TableCell>{log.date}</TableCell>
-              <TableCell>{log.username}</TableCell>
-              <TableCell>{log.activity}</TableCell>
+            <TableRow key={log.id} sx={{ '&:last-child td, &:last-child th': { border: 0 }, '&:nth-of-type(odd)': { bgcolor: 'rgba(134, 168, 207, 0.05)' } }}> {/* Subtle stripe effect */}
+              <TableCell component="th" scope="row" sx={{ color: '#E1CBD7', borderBottomColor: '#5A5A78' }}>{log.id}</TableCell> {/* Light text color for cells */}
+              <TableCell sx={{ color: '#E1CBD7', borderBottomColor: '#5A5A78' }}>{log.date}</TableCell>
+              <TableCell sx={{ color: '#E1CBD7', borderBottomColor: '#5A5A78' }}>{log.username}</TableCell>
+              <TableCell sx={{ color: '#E1CBD7', borderBottomColor: '#5A5A78' }}>{log.activity}</TableCell>
             </TableRow>
           ))}
-
         </TableBody>
       </Table>
     </Paper>

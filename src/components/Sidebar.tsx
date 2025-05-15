@@ -38,20 +38,20 @@ const Sidebar: React.FC = () => {
     <Box
       sx={{
         height: "100vh",
-        background: "#c59be6",
-        borderRadius: "0 20px 20px 10",
+        background: "#26425A",
+        borderRadius: "0 20px 20px 0",
+        boxShadow: 6,
         width: open ? SIDEBAR_WIDTH_EXPANDED : SIDEBAR_WIDTH_COLLAPSED,
         transition: "width 0.3s",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         p: 1,
-        gap: 2,
         overflow: "hidden",
       }}
     >
       <List sx={{ width: "100%", p: 0, mt: 2 }}>
-        {/* Hamburger as a sidebar item, no tooltip */}
+        {/* Hamburger as a sidebar item */}
         <ListItem disablePadding sx={{ mb: 1, justifyContent: "center" }}>
           <ListItemButton
             onClick={() => setOpen((prev) => !prev)}
@@ -60,11 +60,15 @@ const Sidebar: React.FC = () => {
               justifyContent: "center",
               px: 2,
               minHeight: 48,
-              "&:hover": { background: "#b39ddb" },
+              color: '#E1CBD7',
+              "&:hover": {
+                background: "#5A5A78",
+                color: "#fff",
+              },
               cursor: "pointer",
             }}
           >
-            <ListItemIcon sx={{ minWidth: 0, color: "#222" }}>
+            <ListItemIcon sx={{ minWidth: 0, color: 'inherit' }}>
               <MenuIcon />
             </ListItemIcon>
           </ListItemButton>
@@ -76,7 +80,7 @@ const Sidebar: React.FC = () => {
             disablePadding
             sx={{
               mb: 1,
-              justifyContent: "center",
+              justifyContent: open ? "flex-start" : "center",
             }}
           >
             <ListItemButton
@@ -87,19 +91,23 @@ const Sidebar: React.FC = () => {
                 px: 2,
                 minHeight: 48,
                 transition: "background 0.2s",
-                "&:hover": { background: "#b39ddb" },
+                color: '#E1CBD7',
+                "&:hover": {
+                  background: "#5A5A78",
+                  color: "#fff",
+                },
                 cursor: "pointer",
                 overflow: "hidden",
               }}
             >
-              <ListItemIcon sx={{ minWidth: 0, color: "#222" }}>
+              <ListItemIcon sx={{ minWidth: 0, color: 'inherit' }}>
                 {item.icon}
               </ListItemIcon>
               <ListItemText
                 primary={item.label}
                 sx={{
                   ml: 1,
-                  color: "#222",
+                  color: 'inherit',
                   opacity: open ? 1 : 0,
                   width: open ? "auto" : 0,
                   transition: "opacity 0.3s, width 0.3s",
