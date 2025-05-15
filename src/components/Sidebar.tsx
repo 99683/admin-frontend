@@ -12,11 +12,13 @@ import PersonIcon from "@mui/icons-material/Person";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import SettingsIcon from "@mui/icons-material/Settings";
 import TerminalIcon from "@mui/icons-material/Terminal";
+import HomeIcon from "@mui/icons-material/Home";
 import { useNavigate } from "react-router-dom";
 
 
 
 const sidebarItems = [
+    { icon: <HomeIcon />, label: "Dashboard", path: "/" },
     { icon: <PersonIcon />, label: "Users", path: "/users" },
     { icon: <CalendarTodayIcon />, label: "Calendar", path: "/calendar" },
     { icon: <SettingsIcon />, label: "Logs", path: "/logs" },

@@ -15,6 +15,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import { styled } from "@mui/material/styles";
 import Switch from "@mui/material/Switch";
+import { useNavigate } from "react-router-dom";
 
 // --- Custom Switch from your code ---
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
@@ -64,77 +65,109 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   },
 }));
 
-const Header: React.FC = () => (
-  <AppBar
-    position="static"
-    sx={{
-      background: "#c59be6",
-      borderRadius: 3,
-      boxShadow: 3,
-      margin: 2,
-      width: "calc(100% - 48px)",
-      left: 0,
-      top: 0,
-    }}
-    elevation={0}
-  >
-    <Toolbar sx={{ justifyContent: "space-between", flexWrap: "wrap", gap: 2, minHeight: "64px !important" }}>
-      {/* Left: Avatar and Role as a button */}
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          gap: 1,
-          minWidth: 0
-        }}
-        // onClick={() => alert("User avatar clicked!")}
-      >
-        <Avatar sx={{cursor: "pointer", bgcolor: "#fff", color: "#7b5ea7", width: 36, height: 36 }}>
+const Header: React.FC = () => {
+  const navigate = useNavigate();
+
+  return (
+    <AppBar
+      position="static"
+      sx={{
+        background: "#c59be6",
+        borderRadius: 3,
+        boxShadow: 3,
+        margin: 2,
+        width: "calc(100% - 48px)",
+        left: 0,
+        top: 0,
+      }}
+      elevation={0}
+    >
+      <Toolbar sx={{ justifyContent: "space-between", flexWrap: "wrap", gap: 2, minHeight: "64px !important" }}>
+        {/* Left: Only Avatar, clickable, with shadow and color change */}
+        <Avatar
+          sx={{
+            bgcolor: "#fff",
+            color: "#7b5ea7",
+            width: 40,
+            height: 40,
+            cursor: "pointer",
+            boxShadow: "0 0 8px 0 rgba(123, 94, 167, 0.3)", // subtle purple shadow
+            transition: "background 0.2s, box-shadow 0.2s",
+            "&:hover": {
+              background: "#e1c6f7",
+              boxShadow: "0 0 12px 2px rgba(123, 94, 167, 0.4)",
+            },
+            "&:active": {
+              background: "#d6b4f6",
+              boxShadow: "0 0 16px 4px rgba(123, 94, 167, 0.5)",
+            },
+          }}
+          onClick={() => navigate("/admin-profile")}
+        >
           <PersonOutlineIcon />
         </Avatar>
-        <Typography variant="body1" color="textPrimary"
-        sx={{ whiteSpace: "nowrap", textOverflow: "ellipsis", overflow: "hidden" }}
-        >
-          Role
-      </Typography>
-      </Box>
 
-      {/* Center: Search Bar */}
-      <Box sx={{ flex: 1, minWidth: 150, mx: 2, display: "flex", justifyContent: "center" }}>
-        <Paper
-          component="form"
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            width: "100%",
-            maxWidth: 500,
-            minWidth: 0,
-            borderRadius: 20,
-            boxShadow: "none",
-            background: "#fff",
-            px: 2,
-          }}
-        >
-          <InputBase
-            placeholder="Search"
-            sx={{ ml: 1, flex: 1, minWidth: 0 }}
-            inputProps={{ "aria-label": "search" }}
-          />
-          <IconButton size="small">
-            <CloseIcon />
+        {/* Center: Search Bar */}
+        <Box sx={{ flex: 1, minWidth: 150, mx: 2, display: "flex", justifyContent: "center" }}>
+          <Paper
+            component="form"
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              width: "100%",
+              maxWidth: 500,
+              minWidth: 0,
+              borderRadius: 20,
+              boxShadow: "none",
+              background: "#fff",
+              px: 2,
+            }}
+          >
+            <InputBase
+              placeholder="Search"
+              sx={{ ml: 1, flex: 1, minWidth: 0 }}
+              inputProps={{ "aria-label": "search" }}
+            />
+            <IconButton size="small">
+              {/* <CloseIcon /> */}
+            </IconButton>
+          </Paper>
+        </Box>
+
+        {/* Right: Notification and Custom Switch */}
+        <Box sx={{ display: "flex", alignItems: "center", gap: 2, minWidth: 0 }}>
+          <IconButton
+            disableRipple
+            sx={{
+              bgcolor: "#fff",
+              color: "#7b5ea7",
+              width: 40,
+              height: 40,
+              borderRadius: "50%",
+              boxShadow: "0 0 8px 0 rgba(123, 94, 167, 0.3)",
+              transition: "background 0.2s, box-shadow 0.2s",
+              outline: "none",
+              "&:hover": {
+                background: "#e1c6f7",
+                boxShadow: "0 0 12px 2px rgba(123, 94, 167, 0.4)",
+              },
+              "&:active": {
+                background: "#d6b4f6",
+                boxShadow: "0 0 16px 4px rgba(123, 94, 167, 0.5)",
+              },
+              "&:focus": {
+                outline: "none",
+                boxShadow: "0 0 12px 2px rgba(123, 94, 167, 0.4)",
+              },
+            }}
+          >
+            <NotificationsNoneIcon />
           </IconButton>
-        </Paper>
-      </Box>
-
-      {/* Right: Notification and Custom Switch */}
-      <Box sx={{ display: "flex", alignItems: "center", gap: 2, minWidth: 0 }}>
-        <IconButton>
-          <NotificationsNoneIcon sx={{ color: "#2d2046" }} />
-        </IconButton>
-        <MaterialUISwitch defaultChecked />
-      </Box>
-    </Toolbar>
-  </AppBar>
-);
+          <MaterialUISwitch defaultChecked />
+        </Box>
+      </Toolbar>
+    </AppBar>
+  );
+};
 
 export default Header;
