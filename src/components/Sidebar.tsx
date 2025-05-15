@@ -38,7 +38,7 @@ const Sidebar: React.FC = () => {
     <Box
       sx={{
         height: "100vh",
-        background: "#c59be6",
+        background: "#948979",
         borderRadius: "0 20px 20px 10",
         width: open ? SIDEBAR_WIDTH_EXPANDED : SIDEBAR_WIDTH_COLLAPSED,
         transition: "width 0.3s",
