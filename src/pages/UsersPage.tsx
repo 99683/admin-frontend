@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+// src/pages/UsersPage.tsx
+import React, { useState, useEffect, useMemo } from "react";
 import {
   Box,
   Typography,
@@ -7,140 +8,181 @@ import {
   TableRow,
   TableCell,
   TableBody,
+  TableContainer,
   Paper,
   TextField,
   Button,
+  TableSortLabel,
 } from "@mui/material";
-interface User {
-  fullName: string;
+import { addUser, listUsers } from "../lib/api";
+
+/* ----------------- types ----------------- */
+interface NewUser {
+  full_name: string;
   email: string;
   role: number;
   password: string;
 }
+interface User {
+  id: number;
+  fullName: string;
+  email: string;
+  role: string;
+}
+type Order = "asc" | "desc";
+type OrderBy = keyof User;
 
+/* ----------------- component ----------------- */
 const UsersPage: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
-  const [form, setForm] = useState({
-    fullName: "",
-    email: "",
-    password: "",
-    role: 3,
-  });
+  const [form, setForm] = useState({ full_name: "", email: "", password: "", role: 3 });
 
+  /* ── sort state ── */
+  const [order, setOrder] = useState<Order>("asc");
+  const [orderBy, setOrderBy] = useState<OrderBy>("id");
+
+  /* ── fetch users once ── */
   useEffect(() => {
-    const stored = localStorage.getItem("users");
-    if (stored) setUsers(JSON.parse(stored));
+    (async () => {
+      try {
+        const res = await listUsers();          // { status, data }
+        if (res.status !== 200) return console.error("Error fetching users:", res.status);
+
+        const mapped: User[] = res.data.map((u: any) => ({
+          id: u.id,
+          fullName: u.full_name,
+          email: u.email,
+          role: u.role.name,
+        }));
+        setUsers(mapped);
+      } catch (err) {
+        console.error("General error fetching users:", err);
+      }
+    })();
   }, []);
 
-  useEffect(() => {
-    localStorage.setItem("users", JSON.stringify(users));
-  }, [users]);
-
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  }
-
-  async function handleAddUser() {
-    const newUser: User = {
-      fullName: form.fullName,
-      email: form.email,
-      password: form.password,
-      role: form.role,
+  /* ── sorting helpers ── */
+  const sortedUsers = useMemo(() => {
+    const cmp = (a: User, b: User) => {
+      const k = orderBy;
+      return order === "desc"
+        ? (b[k] as any) > (a[k] as any)
+          ? 1
+          : -1
+        : (a[k] as any) > (b[k] as any)
+        ? 1
+        : -1;
     };
+    return [...users].sort(cmp);
+  }, [users, order, orderBy]);
 
-    console.log("New User:", newUser);
+  const toggleSort = (key: OrderBy) => {
+    setOrderBy(key);
+    setOrder(orderBy === key && order === "asc" ? "desc" : "asc");
+  };
 
-    setUsers([...users, newUser]);
-    setForm({
-      fullName: "",
-      email: "",
-      password: "",
-      role: 3,
-    });
-  }
+  /* ── form handlers ── */
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setForm({ ...form, [e.target.name]: e.target.value });
 
+  const handleAddUser = async () => {
+    const payload: NewUser = { ...form };
+    try {
+      const res = await addUser(payload);       // { status, data }
+      if (res.status !== 200) return console.error("Error adding user:", res);
+
+      /* hard-refresh so every component gets the new data */
+      window.location.reload();
+    } catch (err) {
+      console.error("Error adding user:", err);
+    }
+  };
+
+  /* ── UI ── */
   return (
-    <Box
-      sx={{
-        justifyContent: "space-between",
-        flexWrap: "wrap",
-        gap: 2,
-        minHeight: "64px !important",
-        width: "100%",
-        flexDirection: "column",
-        alignItems: "flex-start",
-      }}
-    >
-      {/* Form to Add User */}
-      <Box sx={{ p: 2 }}>
-        <Typography variant="h6" sx={{ fontWeight: "bold", mb: 2, color: "black" }}>
-          Add New User
+    <Box sx={{ display: "flex", flexDirection: "column", gap: 2, width: "100%", p: 2 }}>
+      {/* Add user form */}
+      <Box>
+        <Typography variant="h6" sx={{ fontWeight: "bold", mb: 2 }}>
+          Add User
         </Typography>
         <Box display="flex" gap={2} flexWrap="wrap">
-          <TextField
-            label="Full Name"
-            name="fullName"
-            value={form.fullName}
-            onChange={handleChange}
-          />
-          <TextField
-            label="Email"
-            name="email"
-            value={form.email}
-            onChange={handleChange}
-          />
-          <TextField
-            label="Password"
-            type="password"
-            name="password"
-            value={form.password}
-            onChange={handleChange}
-          />
-          
-          <TextField
-            label="Role"
-            type="number"
-            name="role"
-            value={form.role}
-            onChange={handleChange}
-          />
+          <TextField label="Full Name" name="full_name" value={form.full_name} onChange={handleChange} />
+          <TextField label="Email" name="email" value={form.email} onChange={handleChange} />
+          <TextField label="Password" type="password" name="password" value={form.password} onChange={handleChange} />
+          <TextField label="Role" type="number" name="role" value={form.role} onChange={handleChange} />
           <Button variant="contained" onClick={handleAddUser}>
-            Add User
+            Add
           </Button>
         </Box>
       </Box>
 
-      {/* Users Table */}
-      {/* <Box sx={{ p: 2, width: "100%" }}>
-        <Typography variant="h6" sx={{ fontWeight: "bold", mb: 2, color: "black" }}>
-          Users Table
+      {/* Users table */}
+      <Box>
+        <Typography variant="h6" sx={{ fontWeight: "bold", mb: 2 }}>
+          Users
         </Typography>
-        <Paper sx={{ width: "95%", overflow: "hidden", background: "#ededf3" }}>
-          <Table>
+
+        {/* TableContainer gives us its own scrollable area */}
+        <TableContainer
+          component={Paper}
+          sx={{
+            width: "95%",
+            maxHeight: 350,          // 👈 adjust as needed
+            bgcolor: "#ededf3",
+            overflowY: "auto",
+
+            /* Chrome / Edge / Safari */
+            "&::-webkit-scrollbar": { width: 8 },
+            "&::-webkit-scrollbar-track": { background: "transparent" },
+            "&::-webkit-scrollbar-thumb": {
+              backgroundColor: "#9e9e9e",          // invisible by default
+              borderRadius: 4,
+            },
+
+            /* Firefox */
+            scrollbarWidth: "thin",
+            scrollbarColor: "transparent transparent",  // <thumb> <track>
+            "&:hover": {
+              scrollbarColor: "#9e9e9e transparent",
+            },
+          }}
+        >
+          <Table stickyHeader>
             <TableHead>
               <TableRow>
-                <TableCell>ID</TableCell>
-                <TableCell>Username</TableCell>
-                <TableCell>First Name</TableCell>
-                <TableCell>Last Name</TableCell>
-                <TableCell>Created At</TableCell>
+                {[
+                  { id: "id", label: "ID" },
+                  { id: "fullName", label: "Full Name" },
+                  { id: "email", label: "Email" },
+                  { id: "role", label: "Role" },
+                ].map((h) => (
+                  <TableCell key={h.id}>
+                    <TableSortLabel
+                      active={orderBy === h.id}
+                      direction={orderBy === h.id ? order : "asc"}
+                      onClick={() => toggleSort(h.id as OrderBy)}
+                    >
+                      {h.label}
+                    </TableSortLabel>
+                  </TableCell>
+                ))}
               </TableRow>
             </TableHead>
+
             <TableBody>
-              {users.map((user) => (
-                <TableRow key={user.id}>
-                  <TableCell>{user.id}</TableCell>
-                  <TableCell>{user.username}</TableCell>
-                  <TableCell>{user.firstName}</TableCell>
-                  <TableCell>{user.lastName}</TableCell>
-                  <TableCell>{user.role}</TableCell>
-                  <TableCell>{user.createdAt}</TableCell>
+              {sortedUsers.map((u) => (
+                <TableRow hover key={u.id}>
+                  <TableCell>{u.id}</TableCell>
+                  <TableCell>{u.fullName}</TableCell>
+                  <TableCell>{u.email}</TableCell>
+                  <TableCell>{u.role}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
-        </Paper>
-      </Box> */}
+        </TableContainer>
+      </Box>
     </Box>
   );
 };
