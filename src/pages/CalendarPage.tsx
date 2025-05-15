@@ -216,7 +216,7 @@ const CalendarPage: React.FC = () => {
      '& .rbc-date-cell': { // Day number cells
          padding: '8px',
          color: '#E1CBD7', // Light text color for day numbers
-         borderLeft: 'none', // Add left border to date cells
+         borderLeft: '1px solid #5A5A78', // Add left border to date cells
          '&:first-child': { // Remove left border on the first date cell in a row
               borderLeft: 'none',
          }
@@ -284,14 +284,10 @@ const CalendarPage: React.FC = () => {
     // --- Refine Today Styling ---
     '& .rbc-day-bg.rbc-now': { // Target the background of today's cell
         backgroundColor: 'rgba(195, 142, 180, 0.2) !important', // Apply the highlight
-        padding: '0 !important',
-        margin: '0 !important',
-        border: 'none !important', // Ensure no extra border interferes
     },
     '& .rbc-date-cell.rbc-now': { // Target the date number cell for today
         fontWeight: 'bold', // Make the date bold
         color: '#C38EB4 !important', // Give today's date a distinct color
-        padding: '8px !important',
     },
      // Remove default focus outline from buttons
       '& button:focus': { outline: 'none !important' },
