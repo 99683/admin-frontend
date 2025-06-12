@@ -16,7 +16,7 @@ import { useNavigate } from "react-router-dom";
 const headerItems = [
   { icon: <HomeIcon />, label: "Dashboard", path: "/" },
   { icon: <PersonIcon />, label: "Users", path: "/users" },
-  { icon: <SettingsIcon />, label: "Logs", path: "/logs" },
+  { icon: <SettingsIcon />, label: "Roles", path: "/roles" },
 ];
 
 const Header: React.FC = () => {
